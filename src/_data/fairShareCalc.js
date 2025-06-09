@@ -1,0 +1,30 @@
+const { google } = require('googleapis');
+const path = require('path');
+
+const auth = new google.auth.GoogleAuth({
+  keyFile: path.join(__dirname, '..', 'googlekey.json'),
+  scopes: ['https://www.googleapis.com/auth/spreadsheets.readonly'],
+});
+
+const SPREADSHEET_ID = '19Lc1fyxI9ewtVAo5rupI1iYh6h3T-UIQyc-Niwpn_dY'; // Replace if different
+const RANGE = 'FairShareCalc!A2:E'; // Uses your actual sheet tab name
+
+module.exports = async function () {
+  const client = await auth.getClient();
+  const sheets = google.sheets({ version: 'v4', auth: client });
+
+  const response = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: RANGE,
+  });
+
+  const rows = response.data.values;
+  if (!rows || rows.length === 0) return [];
+
+ return rows.map(r => ({
+  eventId:        r[0] ?? '',
+  memberId:       r[1] ?? '',
+  contribTotal:   parseFloat(r[2] ?? 0),
+  sharePercent:   parseFloat(r[3] ?? 0),
+  shareAmount:    parseFloat(r[4] ?? 0),
+}));}

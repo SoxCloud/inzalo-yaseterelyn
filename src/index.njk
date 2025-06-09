@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inzalo YaseTerelyn</title>
+  <link href="/styles/main.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900 font-sans">
+  <div class="max-w-5xl mx-auto p-6 space-y-12">
+
+    <header class="space-y-2">
+      <h1 class="text-3xl font-bold">Inzalo YaseTerelyn</h1>
+      <p class="text-lg text-gray-700">Honoring community contributions with fairness and transparency.</p>
+    </header>
+
+    <!-- Recent Events -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Recent Events</h2>
+      <ul class="space-y-3">
+        {% for e in events %}
+          <li class="bg-white p-4 shadow rounded">
+            <strong>{{ e.deceasedName }}</strong> · {{ e.date }}
+            <br>
+            Total Collected: R {{ e.total }}
+            {% if e.eligible == 'Yes' %}
+              <span class="ml-2 px-2 py-0.5 text-xs rounded bg-green-200 text-green-800">
+                {{ e.eligible }}
+              </span>
+            {% else %}
+              <span class="ml-2 px-2 py-0.5 text-xs rounded bg-red-200 text-red-800">
+                {{ e.eligible }}
+              </span>
+            {% endif %}
+          </li>
+        {% else %}
+          <li class="italic text-gray-500">No events recorded yet.</li>
+        {% endfor %}
+      </ul>
+    </section> 
+   
+    <!-- Members -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Members ({{ members | length }})</h2>
+      <ul class="grid md:grid-cols-2 gap-3">
+        {% for m in members %}
+          <li class="bg-white p-4 shadow rounded flex flex-col">
+  <span class="font-medium">{{ m.name }}</span>
+  <span class="text-sm text-gray-600">{{ m.type }} · {{ m.status }}</span>
+  {% if m.parentId %}
+    <span class="text-xs text-gray-500 mt-1">Child of ID {{ m.parentId }}</span>
+  {% endif %}
+  <span class="text-sm text-blue-700 mt-1">Latest Contribution: R{{ m.recentContribution }}</span>
+  <span class="text-sm text-green-700">Total Contributed: R{{ m.totalContributed }}</span>
+</li>
+
+        {% endfor %}
+      </ul>
+    </section>
+
+    <!-- Contributions -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Latest Contributions</h2>
+      <table class="w-full bg-white shadow rounded overflow-hidden text-sm">
+        <thead class="bg-gray-200 text-gray-700">
+          <tr>
+            <th class="p-2 text-left">Member ID</th>
+            <th class="p-2 text-left">Event ID</th>
+            <th class="p-2">Date</th>
+            <th class="p-2 text-right">Amount (R)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in contributions | slice(0,10) %}
+            <tr class="border-t">
+              <td class="p-2">{{ c.memberId }}</td>
+              <td class="p-2">{{ c.eventId }}</td>
+              <td class="p-2">{{ c.date }}</td>
+              <td class="p-2 text-right">{{ c.amount }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Fair-share payouts -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-4">Fair-Share Calculations</h2>
+      <table class="w-full bg-white shadow rounded overflow-hidden text-sm">
+        <thead class="bg-gray-200 text-gray-700">
+          <tr>
+            <th class="p-2">Event</th>
+            <th class="p-2">Member</th>
+            <th class="p-2 text-right">Share %</th>
+            <th class="p-2 text-right">Payout (R)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fs in fairShareCalc %}
+            <tr class="border-t">
+              <td class="p-2">{{ fs.eventId }}</td>
+              <td class="p-2">{{ fs.memberId }}</td>
+              <td class="p-2 text-right">{{ fs.sharePercent }}</td>
+              <td class="p-2 text-right">{{ fs.shareAmount }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+ <footer class="mt-12 text-center text-sm text-gray-500">
+      <hr class="my-4">
+      <p>© 2025 Inzalo YaseTerelyn. All rights reserved.</p>
+      <p class="mt-1">Data is sourced from <em>Google Sheets</em>.</p>
+    </footer>
+  </div>
+</body>
+</html>

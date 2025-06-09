@@ -1,0 +1,24 @@
+{
+  "name": "inzalo-yaseterelyn",
+  "version": "1.0.0",
+  "description": "Burial scheme contribution tracker",
+  "scripts": {
+    "start": "npm run build:css && npx @11ty/eleventy --serve",
+    "build": "npm run build:css && npx @11ty/eleventy",
+    "build:css": "npx postcss src/styles/main.css -o _site/styles/main.css"
+  },
+  "keywords": [],
+  "author": "Terelyn Community",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.1",
+    "autoprefixer": "^10.4.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.0",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.4.0"
+  },
+  "dependencies": {
+    "googleapis": "^133.0.0"
+  }
+}
